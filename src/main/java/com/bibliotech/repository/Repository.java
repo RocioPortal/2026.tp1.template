@@ -1,0 +1,13 @@
+package com.bibliotech.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * Interfaz genérica para el acceso a datos.
+ */
+public interface Repository<T, ID> {
+    void guardar(T entidad);
+    Optional<T> buscarPorId(ID id);
+    List<T> buscarTodos();
+}
