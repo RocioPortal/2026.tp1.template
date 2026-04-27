@@ -4,6 +4,7 @@ import com.bibliotech.model.Socio;
 import com.bibliotech.repository.Repository;
 import com.bibliotech.exception.DniDuplicadoException;
 import com.bibliotech.exception.EmailInvalidoException;
+import com.bibliotech.exception.LimitePrestamosExcedidoException;
 
 public class SocioService {
     private final Repository<Socio, String> socioRepository;
@@ -24,5 +25,10 @@ public class SocioService {
         }
 
         socioRepository.guardar(socio);
+    }
+    public void validarCupoDisponible(Socio socio, int librosActuales) {
+        if (librosActuales >= socio.tipo().getLimitePrestamos()) {
+            throw new LimitePrestamosExcedidoException(socio.nombre(), socio.tipo().getLimitePrestamos());
+        }
     }
 }

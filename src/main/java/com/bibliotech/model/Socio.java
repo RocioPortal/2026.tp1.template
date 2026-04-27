@@ -11,8 +11,15 @@ public record Socio(
         ESTUDIANTE(3),
         DOCENTE(5);
 
-        private final int limite;
-        TipoSocio(int limite) { this.limite = limite; }
-        public int getLimite() { return limite; }
+        private final int limitePrestamos;
+
+        // Constructor del Enum
+        TipoSocio(int limite) {
+            this.limitePrestamos = limite;
+        }
+
+        public int getLimitePrestamos() {
+            return limitePrestamos;
+        }
     }
 }
