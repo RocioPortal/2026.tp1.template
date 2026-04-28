@@ -12,7 +12,7 @@ public record Prestamo(
         LocalDate fechaLimite,
         Optional<LocalDate> fechaDevolucion
 ) {
-    public static final int DIAS_PRESTAMO = 15; // vence hoy → cualquier devolución es tardía
+    public static final int DIAS_PRESTAMO = 15;
 
     public boolean estaDevuelto() {
         return fechaDevolucion.isPresent();
