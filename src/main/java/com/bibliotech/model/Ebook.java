@@ -1,10 +1,11 @@
 package com.bibliotech.model;
 
-public record Libro(
+public record Ebook(
         String isbn,
         String titulo,
         String autor,
-        int año,
+        int anio,
         Categoria categoria,
-        int numeroPaginas
+        String formatoArchivo,
+        double tamanioMB
 ) implements Recurso {}
