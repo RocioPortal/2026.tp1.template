@@ -134,3 +134,23 @@ Como `Prestamo` es un record inmutable, no se puede modificar su
 `Prestamo` con la fecha de devolución cargada (mediante el factory
 method `conDevolucion()`) y se reemplaza el anterior en el repositorio.
 Sin el método `actualizar`, el sistema acumulaba préstamos duplicados.
+
+## 10. Sistema de Sanciones (Bonus)
+
+Se implementó un sistema de sanciones para socios que devuelven
+recursos con retraso. La duración del bloqueo es el doble de los
+días de retraso, como penalización proporcional y disuasiva.
+
+La lógica se encapsuló en un `SancionService` independiente que
+recibe su repositorio por constructor, manteniendo la consistencia
+arquitectónica del resto del sistema.
+
+`PrestamoService` delega en `SancionService` tanto la verificación
+de sanciones activas (antes de registrar un préstamo) como la
+creación de nuevas sanciones (al registrar una devolución tardía).
+Esto respeta el **principio Single Responsibility**: cada servicio
+tiene una única razón para cambiar.
+
+La excepción `SocioSancionadoException` se integra a la jerarquía
+existente extendiendo `BibliotecaException`, manteniendo la
+consistencia del manejo de errores en todo el sistema.

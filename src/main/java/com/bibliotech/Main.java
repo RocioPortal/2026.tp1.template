@@ -16,10 +16,13 @@ public class Main {
     private static final Repository<Recurso, String> recursoRepo = new RecursoRepositoryMemoria();
     private static final Repository<Socio, String> socioRepo = new SocioRepositoryMemoria();
     private static final Repository<Prestamo, String> prestamoRepo = new PrestamoRepositoryMemoria();
+    private static final Repository<Sancion, String> sancionRepo = new SancionRepositoryMemoria();
 
     private static final RecursoService recursoService = new RecursoService(recursoRepo);
     private static final SocioService socioService = new SocioService(socioRepo);
-    private static final PrestamoService prestamoService = new PrestamoService(prestamoRepo, socioService, recursoService);
+    private static final SancionService sancionService = new SancionService(sancionRepo);
+    private static final PrestamoService prestamoService = new PrestamoService(
+            prestamoRepo, socioService, recursoService, sancionService);
 
     public static void main(String[] args) {
         cargarDatosDePrueba();
@@ -36,6 +39,7 @@ public class Main {
                 case 1 -> menuRecursos();
                 case 2 -> menuSocios();
                 case 3 -> menuPrestamos();
+                case 4 -> menuSanciones();
                 case 0 -> {
                     System.out.println("Hasta luego.");
                     activo = false;
@@ -85,6 +89,7 @@ public class Main {
         System.out.println("1. Recursos (Libros / Ebooks)");
         System.out.println("2. Socios");
         System.out.println("3. Prestamos");
+        System.out.println("4. Sanciones");
         System.out.println("0. Salir");
         System.out.println("---------------------------------");
     }
@@ -323,7 +328,39 @@ public class Main {
                 p.estaDevuelto() ? "Devuelto" : (p.estaVencido() ? "Vencido" : "Activo")
         ));
     }
+// ---- SANCIONES ----------------------------------------------
 
+    private static void menuSanciones() {
+        System.out.println("\n--- Sanciones -------------------");
+        System.out.println("1. Ver todas las sanciones");
+        System.out.println("2. Ver sanciones activas");
+        System.out.println("0. Volver");
+
+        int opcion = leerEntero("Seleccione: ");
+        switch (opcion) {
+            case 1 -> listarSanciones(sancionService.listarTodas());
+            case 2 -> listarSanciones(sancionService.listarActivas());
+            case 0 -> {}
+            default -> System.out.println("Opcion invalida.");
+        }
+    }
+
+    private static void listarSanciones(List<Sancion> sanciones) {
+        if (sanciones.isEmpty()) {
+            System.out.println("No hay sanciones registradas.");
+            return;
+        }
+        System.out.println("\n-- Sanciones --------------------");
+        sanciones.forEach(s -> System.out.printf(
+                "  [%s] %s | Retraso: %d dia(s) | Desde: %s Hasta: %s | %s%n",
+                s.id(),
+                s.socio().nombre(),
+                s.diasRetraso(),
+                s.fechaInicio(),
+                s.fechaFin(),
+                s.estaActiva() ? "ACTIVA" : "VENCIDA"
+        ));
+    }
     // ---- HELPERS ------------------------------------------------
 
     private static Categoria leerCategoria() {
