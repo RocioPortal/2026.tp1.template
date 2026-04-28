@@ -65,7 +65,17 @@ Esta jerarquía permite capturar cualquier error del sistema con un
 único `catch (BibliotecaException e)`, o capturar errores específicos
 cuando se necesita un manejo diferenciado. Evita el uso de
 `RuntimeException` genéricas que no comunican nada sobre el error.
-
+```
+RuntimeException
+    └── BibliotecaException
+            ├── DniDuplicadoException
+            ├── EmailInvalidoException
+            ├── LimitePrestamosExcedidoException
+            ├── LibroNoDisponibleException
+            ├── SocioSancionadoException
+            ├── SocioNoEncontradoException
+            └── PrestamoNoEncontradoException
+```
 ---
 
 ## 6. Inyección de Dependencias por Constructor
