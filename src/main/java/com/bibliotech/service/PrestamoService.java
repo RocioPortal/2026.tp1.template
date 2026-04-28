@@ -7,7 +7,8 @@ import com.bibliotech.model.Recurso;
 import com.bibliotech.model.Sancion;
 import com.bibliotech.model.Socio;
 import com.bibliotech.repository.Repository;
-
+import com.bibliotech.exception.SocioNoEncontradoException;
+import com.bibliotech.exception.PrestamoNoEncontradoException;
 import java.util.List;
 
 public class PrestamoService {
@@ -30,8 +31,7 @@ public class PrestamoService {
     public void registrarPrestamo(String dni, String isbn) throws BibliotecaException {
         // 1. Buscar socio
         Socio socio = socioService.buscarPorDni(dni)
-                .orElseThrow(() -> new BibliotecaException(
-                        "Socio con DNI " + dni + " no encontrado."));
+                .orElseThrow(() -> new SocioNoEncontradoException(dni));
 
         // 2. Verificar que no tenga sancion activa
         sancionService.verificarSancion(socio);
@@ -61,8 +61,7 @@ public class PrestamoService {
     public long registrarDevolucion(String idPrestamo) throws BibliotecaException {
         // 1. Buscar prestamo
         Prestamo prestamo = prestamoRepository.buscarPorId(idPrestamo)
-                .orElseThrow(() -> new BibliotecaException(
-                        "Prestamo " + idPrestamo + " no encontrado."));
+                .orElseThrow(() -> new PrestamoNoEncontradoException(idPrestamo));
 
         if (prestamo.estaDevuelto()) {
             throw new BibliotecaException("Este prestamo ya fue devuelto.");
