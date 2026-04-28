@@ -24,4 +24,14 @@ public class SocioRepositoryMemoria implements Repository<Socio, String> {
     public List<Socio> buscarTodos() {
         return new ArrayList<>(socios);
     }
+
+    @Override
+    public void actualizar(Socio socio, String dni) {
+        for (int i = 0; i < socios.size(); i++) {
+            if (socios.get(i).dni().equals(dni)) {
+                socios.set(i, socio);
+                return;
+            }
+        }
+    }
 }

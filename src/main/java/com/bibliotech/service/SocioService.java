@@ -5,6 +5,8 @@ import com.bibliotech.repository.Repository;
 import com.bibliotech.exception.DniDuplicadoException;
 import com.bibliotech.exception.EmailInvalidoException;
 import com.bibliotech.exception.LimitePrestamosExcedidoException;
+import java.util.List;
+import java.util.Optional;
 
 public class SocioService {
     private final Repository<Socio, String> socioRepository;
@@ -30,5 +32,12 @@ public class SocioService {
         if (librosActuales >= socio.tipo().getLimitePrestamos()) {
             throw new LimitePrestamosExcedidoException(socio.nombre(), socio.tipo().getLimitePrestamos());
         }
+    }
+    public Optional<Socio> buscarPorDni(String dni) {
+        return socioRepository.buscarPorId(dni);
+    }
+
+    public List<Socio> listarTodos() {
+        return socioRepository.buscarTodos();
     }
 }

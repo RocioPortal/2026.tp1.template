@@ -7,12 +7,11 @@ import java.util.Optional;
 public record Prestamo(
         String id,
         Socio socio,
-        Libro libro,
+        Recurso recurso,
         LocalDate fechaInicio,
         LocalDate fechaLimite,
         Optional<LocalDate> fechaDevolucion
 ) {
-
     public static final int DIAS_PRESTAMO = 15;
 
     public boolean estaDevuelto() {
@@ -35,21 +34,19 @@ public record Prestamo(
         return 0;
     }
 
-    // Factory: crear préstamo nuevo
-    public static Prestamo nuevo(Socio socio, Libro libro) {
+    public static Prestamo nuevo(Socio socio, Recurso recurso) {
         LocalDate hoy = LocalDate.now();
-        String id = "P-" + socio.dni() + "-" + libro.isbn() + "-" + hoy;
+        String id = "P-" + socio.dni() + "-" + recurso.isbn() + "-" + hoy;
         return new Prestamo(
-                id, socio, libro, hoy,
+                id, socio, recurso, hoy,
                 hoy.plusDays(DIAS_PRESTAMO),
                 Optional.empty()
         );
     }
 
-    // Factory: registrar devolución (crea nuevo record con la fecha)
     public Prestamo conDevolucion() {
         return new Prestamo(
-                this.id, this.socio, this.libro,
+                this.id, this.socio, this.recurso,
                 this.fechaInicio, this.fechaLimite,
                 Optional.of(LocalDate.now())
         );
